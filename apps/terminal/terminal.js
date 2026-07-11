@@ -3,6 +3,12 @@
 // =====================================
 
 
+let terminalPath = ["C:"];
+
+
+
+
+
 function terminalApp(){
 
 
@@ -11,74 +17,51 @@ function terminalApp(){
 
 
     if(old){
-        old.remove();
+
+        old.style.display="block";
+
+        old.style.zIndex=999;
+
+        return;
+
     }
 
 
 
-    let terminal =
-    document.createElement("div");
+
+    let content = `
 
 
-    terminal.className="os-window";
-
-    terminal.id="terminal";
-
-
-
-    terminal.style.left="250px";
-
-    terminal.style.top="120px";
-
-
-
-    terminal.innerHTML = `
-
-    <div class="window-title">
-
-        <span>
-        💻 Terminal
-        </span>
-
-
-        <button onclick="closeApp('terminal')">
-        ✕
-        </button>
-
-    </div>
-
-
-    <div class="window-body">
-
-
-        <pre id="terminalOutput">
+    <pre id="terminalOutput">
 LaytonOS Terminal
+Type "help" for commands.
 
-Type help for commands.
-
-C:\\Users\\Layton>
-        </pre>
+C:\\>
+    </pre>
 
 
-        <input 
-        id="terminalInput"
-        placeholder="command..."
-        onkeydown="runCommand(event)"
-        >
 
-    </div>
+    <input 
+    id="terminalInput"
+    placeholder="Enter command..."
+    onkeydown="terminalCommand(event)"
+    >
+
 
     `;
 
 
 
-    document
-    .getElementById("window-area")
-    .appendChild(terminal);
 
+    createWindow(
 
+        "terminal",
 
-    makeDraggable(terminal);
+        "💻 Terminal",
+
+        content
+
+    );
 
 
 
@@ -91,11 +74,12 @@ C:\\Users\\Layton>
 
 
 
-function runCommand(event){
+function terminalCommand(event){
 
 
     if(event.key !== "Enter")
         return;
+
 
 
 
@@ -104,30 +88,29 @@ function runCommand(event){
 
 
 
-    let command =
-    input.value.trim();
-
-
-
     let output =
     document.getElementById("terminalOutput");
 
 
 
+    let command =
+    input.value.trim();
+
+
+
     output.innerHTML +=
 
-    "\n\nC:\\Users\\Layton> "
-    + command;
+    "\n\nC:\\> " + command;
 
 
 
-    let args =
+    let parts =
     command.split(" ");
 
 
 
     let cmd =
-    args[0].toLowerCase();
+    parts[0].toLowerCase();
 
 
 
@@ -143,20 +126,22 @@ function runCommand(event){
         output.innerHTML += `
 
 
-        \n\nCommands:
+        \n\nAvailable commands:
 
+
+        \nhelp
 
         \ndir
 
-        \nmkdir <name>
+        \ncd
 
-        \necho <text>
+        \nmkdir
+
+        \necho
 
         \nsysteminfo
 
         \nclear
-
-        \nwhoami
 
 
         `;
@@ -170,27 +155,23 @@ function runCommand(event){
 
 
 
-    // DIRECTORY LIST
-
+    // DIR
 
     else if(cmd==="dir"){
 
 
-        let files =
-        fileSystem["C:"]
-        .Users
-        .Layton
-        .Desktop;
+        let folder =
+        getTerminalFolder();
 
 
 
-        Object.keys(files)
-        .forEach(file=>{
+        Object.keys(folder)
+        .forEach(item=>{
 
 
             output.innerHTML +=
 
-            "\n📁 " + file;
+            "\n" + item;
 
 
         });
@@ -205,18 +186,28 @@ function runCommand(event){
 
 
 
-    // MAKE FOLDER
+    // CD
+
+    else if(cmd==="cd"){
 
 
-    else if(cmd==="mkdir"){
 
-
-        if(!args[1]){
+        if(!parts[1]){
 
 
             output.innerHTML +=
 
-            "\nMissing folder name";
+            "\nMissing folder";
+
+
+        }
+
+        else if(parts[1]===".."){
+
+
+            if(terminalPath.length>1)
+
+            terminalPath.pop();
 
 
         }
@@ -224,22 +215,28 @@ function runCommand(event){
         else{
 
 
-            fileSystem["C:"]
-            .Users
-            .Layton
-            .Desktop[args[1]]
-            ={};
+            let folder =
+            getTerminalFolder();
 
 
 
-            saveDrive(fileSystem);
+            if(folder[parts[1]]){
 
 
+                terminalPath.push(parts[1]);
 
-            output.innerHTML +=
 
-            "\nCreated folder: "
-            + args[1];
+            }
+
+            else{
+
+
+                output.innerHTML +=
+
+                "\nFolder not found";
+
+
+            }
 
 
         }
@@ -248,6 +245,45 @@ function runCommand(event){
 
     }
 
+
+
+
+
+
+
+
+    // MKDIR
+
+    else if(cmd==="mkdir"){
+
+
+        if(parts[1]){
+
+
+            let folder =
+            getTerminalFolder();
+
+
+
+            folder[parts[1]]={};
+
+
+
+            saveStorage();
+
+
+
+            output.innerHTML +=
+
+            "\nCreated folder: "
+
+            + parts[1];
+
+
+        }
+
+
+    }
 
 
 
@@ -258,15 +294,14 @@ function runCommand(event){
 
     // ECHO
 
-
     else if(cmd==="echo"){
 
 
         output.innerHTML +=
 
-        "\n" +
+        "\n"
 
-        args.slice(1).join(" ");
+        + parts.slice(1).join(" ");
 
 
     }
@@ -278,9 +313,7 @@ function runCommand(event){
 
 
 
-
     // SYSTEM INFO
-
 
     else if(cmd==="systeminfo"){
 
@@ -288,19 +321,13 @@ function runCommand(event){
         output.innerHTML += `
 
 
-        \n\nLaytonOS System Information
+        \n\nLaytonOS
 
+        \nVersion: 1.0
 
-        \nOS: LaytonOS v1
+        \nBrowser OS
 
-
-        \nCPU: Virtual Processor
-
-
-        \nRAM: 32GB
-
-
-        \nStorage: Virtual SSD
+        \nStorage: Virtual Drive
 
 
         `;
@@ -315,28 +342,7 @@ function runCommand(event){
 
 
 
-    // USER
-
-
-    else if(cmd==="whoami"){
-
-
-        output.innerHTML +=
-
-        "\nLayton";
-
-
-    }
-
-
-
-
-
-
-
-
     // CLEAR
-
 
     else if(cmd==="clear"){
 
@@ -347,7 +353,6 @@ function runCommand(event){
 
 
     }
-
 
 
 
@@ -366,8 +371,8 @@ function runCommand(event){
 
 
 
-    input.value="";
 
+    input.value="";
 
 
     output.scrollTop =
@@ -380,4 +385,29 @@ function runCommand(event){
 
 
 
-window.openTerminal = terminalApp;
+
+
+
+function getTerminalFolder(){
+
+
+    let current =
+    fileSystem;
+
+
+
+    for(let part of terminalPath){
+
+
+        current =
+        current[part];
+
+
+    }
+
+
+
+    return current;
+
+
+}
