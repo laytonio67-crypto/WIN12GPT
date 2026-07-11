@@ -10,14 +10,17 @@ body {
     height:100vh;
     overflow:hidden;
 
-    color:white;
-
 }
 
 
-/* =========================
-   BOOT SCREEN
-========================= */
+
+
+
+
+
+/* =====================
+BOOT
+===================== */
 
 
 #boot {
@@ -28,58 +31,39 @@ body {
 
     background:#050505;
 
+    color:white;
+
     display:flex;
 
     flex-direction:column;
 
-    justify-content:center;
-
     align-items:center;
+
+    justify-content:center;
 
     z-index:9999;
 
 }
 
 
-.logo {
+.windows-logo {
 
-    width:90px;
-    height:90px;
-
-    border-radius:25px;
-
-    background:white;
-
-    color:black;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    font-size:60px;
-
-    font-weight:bold;
+    font-size:90px;
 
 }
-
 
 
 #boot h1 {
 
-    font-size:45px;
-
-    margin:20px;
+    font-size:48px;
 
 }
 
 
 
+.loading {
 
-.progress {
-
-    width:300px;
+    width:280px;
 
     height:8px;
 
@@ -93,23 +77,21 @@ body {
 
 
 
-.progress div {
+.loading div {
 
     height:100%;
 
-    width:0%;
+    width:0;
 
     background:white;
 
-    animation:
-    bootLoad 3s forwards;
+    animation:load 3s forwards;
 
 }
 
 
 
-@keyframes bootLoad {
-
+@keyframes load {
 
     to {
 
@@ -125,35 +107,33 @@ body {
 
 
 
-/* =========================
- LOGIN
-========================= */
+
+/* =====================
+LOGIN
+===================== */
 
 
 #login {
 
-
     display:none;
-
 
     position:fixed;
 
     inset:0;
 
 
-    justify-content:center;
-
-    align-items:center;
-
-
     background:
 
     linear-gradient(
-    135deg,
-    #1b8cff,
-    #6b35d8
+        135deg,
+        #0067c0,
+        #6b36c9
     );
 
+
+    justify-content:center;
+
+    align-items:center;
 
 }
 
@@ -162,12 +142,14 @@ body {
 .login-card {
 
 
-    width:350px;
+    width:360px;
+
 
     padding:40px;
 
 
     text-align:center;
+
 
 
     background:
@@ -185,12 +167,14 @@ body {
     border-radius:25px;
 
 
+    color:white;
+
 
 }
 
 
 
-.profile {
+.avatar {
 
     font-size:90px;
 
@@ -210,7 +194,7 @@ body {
     border:none;
 
 
-    border-radius:15px;
+    border-radius:12px;
 
 
     cursor:pointer;
@@ -227,9 +211,11 @@ body {
 
 
 
-/* =========================
- DESKTOP
-========================= */
+
+
+/* =====================
+DESKTOP
+===================== */
 
 
 #desktop {
@@ -241,20 +227,18 @@ body {
     height:100vh;
 
 
-    padding:30px;
+    padding:35px;
 
+
+    color:white;
 
 
     background:
 
     linear-gradient(
-
-    135deg,
-
-    #0078d7,
-
-    #4b2c91
-
+        135deg,
+        #0078d4,
+        #4b2c91
     );
 
 
@@ -262,10 +246,10 @@ body {
 
 
 
-.desktop-icon {
+.icon {
 
 
-    width:100px;
+    width:90px;
 
 
     text-align:center;
@@ -277,7 +261,7 @@ body {
     cursor:pointer;
 
 
-    margin-bottom:35px;
+    margin-bottom:30px;
 
 
     transition:.2s;
@@ -287,19 +271,17 @@ body {
 
 
 
-.desktop-icon:hover {
+.icon:hover {
 
 
-    transform:
-
-    scale(1.1);
+    transform:scale(1.1);
 
 
 }
 
 
 
-.desktop-icon span {
+.icon span {
 
 
     display:block;
@@ -315,9 +297,11 @@ body {
 
 
 
-/* =========================
- TASKBAR
-========================= */
+
+
+/* =====================
+TASKBAR
+===================== */
 
 
 #taskbar {
@@ -335,17 +319,17 @@ body {
     width:100%;
 
 
-    height:70px;
+    height:65px;
 
 
 
     display:flex;
 
 
-    justify-content:center;
-
-
     align-items:center;
+
+
+    justify-content:center;
 
 
 
@@ -361,8 +345,7 @@ body {
 
     backdrop-filter:
 
-    blur(30px);
-
+    blur(25px);
 
 
 }
@@ -373,6 +356,7 @@ body {
 
 
     width:45px;
+
 
     height:45px;
 
@@ -385,7 +369,7 @@ body {
 
     background:
 
-    rgba(255,255,255,.75);
+    rgba(255,255,255,.8);
 
 
     cursor:pointer;
@@ -395,6 +379,7 @@ body {
 
 
 }
+
 
 
 
@@ -418,12 +403,13 @@ body {
 
 
 
-/* =========================
- START MENU
-========================= */
+
+/* =====================
+START MENU
+===================== */
 
 
-#start-menu {
+#startMenu {
 
 
     display:none;
@@ -432,15 +418,13 @@ body {
     position:fixed;
 
 
-    bottom:90px;
+    bottom:80px;
 
 
     left:50%;
 
 
-    transform:
-
-    translateX(-50%);
+    transform:translateX(-50%);
 
 
 
@@ -448,7 +432,7 @@ body {
 
 
 
-    padding:30px;
+    padding:25px;
 
 
 
@@ -458,7 +442,7 @@ body {
 
     background:
 
-    rgba(255,255,255,.55);
+    rgba(255,255,255,.65);
 
 
 
@@ -471,17 +455,18 @@ body {
     color:black;
 
 
+
 }
 
 
 
-#start-menu input {
+#startMenu input {
 
 
     width:100%;
 
 
-    padding:15px;
+    padding:14px;
 
 
     border:none;
@@ -494,13 +479,18 @@ body {
 
 
 
-.apps {
+.start-grid {
 
 
     margin-top:20px;
 
 
-    display:flex;
+    display:grid;
+
+
+    grid-template-columns:
+
+    repeat(2,1fr);
 
 
     gap:15px;
@@ -510,13 +500,10 @@ body {
 
 
 
-.apps button {
+.start-grid button {
 
 
-    flex:1;
-
-
-    padding:20px;
+    padding:25px;
 
 
     border:none;
@@ -537,9 +524,10 @@ body {
 
 
 
-/* =========================
- WINDOWS
-========================= */
+
+/* =====================
+WINDOWS
+===================== */
 
 
 .os-window {
@@ -548,10 +536,10 @@ body {
     position:absolute;
 
 
-    width:600px;
+    width:650px;
 
 
-    height:400px;
+    height:420px;
 
 
 
@@ -563,12 +551,15 @@ body {
 
     backdrop-filter:
 
-    blur(25px);
+    blur(30px);
 
 
 
     border-radius:20px;
 
+
+
+    overflow:hidden;
 
 
     color:black;
@@ -577,69 +568,35 @@ body {
 
     box-shadow:
 
-    0 25px 80px rgba(0,0,0,.5);
-
-
-
-    overflow:hidden;
-
-
-    animation:
-
-    openWindow .2s;
+    0 25px 80px rgba(0,0,0,.45);
 
 
 }
 
 
 
-
-@keyframes openWindow {
-
-
-from {
-
-    opacity:0;
-
-    transform:scale(.9);
-
-}
-
-
-to {
-
-    opacity:1;
-
-    transform:scale(1);
-
-}
-
-
-}
-
-
-
-.window-title {
+.window-header {
 
 
     height:45px;
 
 
-    padding:10px 15px;
-
-
     display:flex;
-
-
-    justify-content:space-between;
 
 
     align-items:center;
 
 
+    justify-content:space-between;
+
+
+    padding:0 15px;
+
+
     background:
 
-    rgba(255,255,255,.5);
+    rgba(255,255,255,.55);
+
 
 
     cursor:move;
@@ -649,7 +606,7 @@ to {
 
 
 
-.window-title button {
+.window-header button {
 
 
     border:none;
@@ -661,6 +618,9 @@ to {
     cursor:pointer;
 
 
+    font-size:18px;
+
+
 }
 
 
@@ -670,5 +630,19 @@ to {
 
     padding:20px;
 
+
+}
+
+
+
+textarea,
+input {
+
+
+    border-radius:10px;
+
+    border:1px solid #ccc;
+
+    padding:10px;
 
 }
