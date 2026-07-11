@@ -16,40 +16,36 @@
 <body>
 
 
-<!-- =====================
-     BOOT SCREEN
-===================== -->
+<!-- BOOT -->
 
-<div id="bootScreen">
+<section id="boot">
 
-    <div class="bootLogo">
-        ◉
+    <div class="logo">
+        L
     </div>
 
     <h1>LaytonOS</h1>
 
-    <p>Starting virtual machine...</p>
+    <p>Initializing system...</p>
 
-    <div class="loadingBar">
+    <div class="progress">
         <div></div>
     </div>
 
-</div>
+</section>
 
 
 
 
-<!-- =====================
-     LOGIN SCREEN
-===================== -->
+
+<!-- LOGIN -->
+
+<section id="login">
 
 
-<div id="loginScreen">
+    <div class="login-card">
 
-
-    <div class="loginBox">
-
-        <div class="avatar">
+        <div class="profile">
             👤
         </div>
 
@@ -57,40 +53,41 @@
         <h1>Layton</h1>
 
 
-        <button onclick="login()">
-            Sign In
+        <button onclick="startDesktop()">
+            Sign in
         </button>
 
 
     </div>
 
 
-</div>
+</section>
 
 
 
 
 
-<!-- =====================
-     DESKTOP
-===================== -->
 
 
-<div id="desktop">
+<!-- DESKTOP -->
+
+<main id="desktop">
 
 
-    <div class="desktopIcon" ondblclick="openWindow('explorer')">
+    <div class="desktop-icon"
+    onclick="openApp('explorer')">
 
         📁
         <span>
-            File Explorer
+            Explorer
         </span>
 
     </div>
 
 
 
-    <div class="desktopIcon" ondblclick="openWindow('terminal')">
+    <div class="desktop-icon"
+    onclick="openApp('terminal')">
 
         💻
         <span>
@@ -101,7 +98,8 @@
 
 
 
-    <div class="desktopIcon" ondblclick="openWindow('settings')">
+    <div class="desktop-icon"
+    onclick="openApp('settings')">
 
         ⚙️
         <span>
@@ -111,56 +109,20 @@
     </div>
 
 
-
-</div>
-
+</main>
 
 
 
 
 
-<!-- =====================
-     START MENU
-===================== -->
-
-
-<div id="startMenu">
-
-
-    <h2>
-        LaytonOS
-    </h2>
-
-
-    <input placeholder="Search">
-
-
-    <div class="startApps">
-
-
-        <button onclick="openWindow('explorer')">
-            📁
-            <br>
-            Files
-        </button>
-
-
-        <button onclick="openWindow('terminal')">
-            💻
-            <br>
-            Terminal
-        </button>
 
 
 
-        <button onclick="openWindow('settings')">
-            ⚙️
-            <br>
-            Settings
-        </button>
+<!-- APP WINDOWS -->
 
 
-    </div>
+<div id="window-area">
+
 
 
 </div>
@@ -172,120 +134,45 @@
 
 
 
-<!-- =====================
-     FILE EXPLORER
-===================== -->
+<!-- START MENU -->
 
 
-<div class="window" id="explorer">
-
-
-<div class="windowHeader">
-
-<span>
-📁 File Explorer
-</span>
-
-
-<div>
-
-<button onclick="minimizeWindow('explorer')">
-─
-</button>
-
-<button onclick="maximizeWindow('explorer')">
-□
-</button>
-
-<button onclick="closeWindow('explorer')">
-✕
-</button>
-
-</div>
-
-
-</div>
-
-
-
-<div class="windowContent">
+<div id="start-menu">
 
 
 <h2>
-This PC
+LaytonOS
 </h2>
 
 
-<p>💾 Local Disk (C:)</p>
-
-<p>📂 Users</p>
-
-<p>📂 Documents</p>
-
-<p>📂 Downloads</p>
-
-<p>📂 Pictures</p>
-
-
-</div>
-
-
-</div>
+<input placeholder="Search apps">
 
 
 
+<div class="apps">
 
 
+<button onclick="openApp('explorer')">
+📁
+Explorer
+</button>
 
 
-<!-- =====================
-     TERMINAL
-===================== -->
+<button onclick="openApp('terminal')">
+💻
+Terminal
+</button>
 
 
-<div class="window" id="terminal">
-
-
-<div class="windowHeader">
-
-<span>
-💻 Terminal
-</span>
-
-
-<button onclick="closeWindow('terminal')">
-✕
+<button onclick="openApp('settings')">
+⚙️
+Settings
 </button>
 
 
 </div>
 
 
-<div class="windowContent">
-
-
-<pre id="terminalText">
-
-LaytonOS Terminal
-
-Type help for commands
-
-
-C:\Users\Layton>
-
-</pre>
-
-
-<input 
-id="terminalInput"
-placeholder="command..."
-onkeydown="terminalCommand(event)"
->
-
-
-</div>
-
-
 </div>
 
 
@@ -296,104 +183,40 @@ onkeydown="terminalCommand(event)"
 
 
 
-<!-- =====================
-     SETTINGS
-===================== -->
+<!-- TASKBAR -->
 
 
-<div class="window" id="settings">
-
-
-<div class="windowHeader">
-
-
-<span>
-⚙️ Settings
-</span>
-
-
-<button onclick="closeWindow('settings')">
-✕
-</button>
-
-
-</div>
-
-
-<div class="windowContent">
-
-
-<h2>
-System
-</h2>
-
-
-<p>
-OS: LaytonOS
-</p>
-
-
-<p>
-Version: 0.2
-</p>
-
-
-<p>
-CPU: Virtual Processor
-</p>
-
-
-<p>
-RAM: 32GB Virtual Memory
-</p>
-
-
-<p>
-Storage: 256GB Virtual SSD
-</p>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-<!-- =====================
-     TASKBAR
-===================== -->
-
-
-<div id="taskbar">
+<footer id="taskbar">
 
 
 <button onclick="toggleStart()">
+
 ⊞
+
 </button>
 
 
 
-<button onclick="openWindow('explorer')">
+<div class="task-apps">
+
+
+<button onclick="openApp('explorer')">
 📁
 </button>
 
 
-
-<button onclick="openWindow('terminal')">
+<button onclick="openApp('terminal')">
 💻
 </button>
 
 
-
-<button onclick="openWindow('settings')">
+<button onclick="openApp('settings')">
 ⚙️
 </button>
+
+
+</div>
+
 
 
 
@@ -402,14 +225,15 @@ Storage: 256GB Virtual SSD
 </div>
 
 
-</div>
+
+</footer>
+
 
 
 
 
 
 <script src="script.js"></script>
-
 
 </body>
 
