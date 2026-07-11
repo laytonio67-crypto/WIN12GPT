@@ -3,10 +3,9 @@
 // =====================================
 
 
-
-// -----------------------------
-// Boot System
-// -----------------------------
+// =====================
+// Boot
+// =====================
 
 
 setTimeout(() => {
@@ -24,12 +23,12 @@ setTimeout(() => {
 
 
 
-// -----------------------------
+// =====================
 // Login
-// -----------------------------
+// =====================
 
 
-function startDesktop(){
+function login(){
 
 
     document.getElementById("login").style.display="none";
@@ -46,20 +45,21 @@ function startDesktop(){
 
 
 
-// -----------------------------
+
+// =====================
 // Clock
-// -----------------------------
+// =====================
 
 
 function updateClock(){
 
 
-    let date = new Date();
+    let now = new Date();
 
 
-    document.getElementById("clock").textContent =
+    document.getElementById("clock").innerHTML =
 
-    date.toLocaleTimeString([], {
+    now.toLocaleTimeString([], {
 
         hour:"2-digit",
 
@@ -69,6 +69,7 @@ function updateClock(){
 
 
 }
+
 
 
 setInterval(updateClock,1000);
@@ -81,16 +82,18 @@ updateClock();
 
 
 
-// -----------------------------
+
+// =====================
 // Start Menu
-// -----------------------------
+// =====================
 
 
 function toggleStart(){
 
 
     let menu =
-    document.getElementById("start-menu");
+    document.getElementById("startMenu");
+
 
 
     if(menu.style.display === "block"){
@@ -99,7 +102,7 @@ function toggleStart(){
 
     }
 
-    else {
+    else{
 
         menu.style.display="block";
 
@@ -116,31 +119,28 @@ function toggleStart(){
 
 
 
-// -----------------------------
-// Window Manager
-// -----------------------------
+// =====================
+// Window System
+// =====================
 
 
-let windowCount = 0;
+let windowLayer = 10;
 
 
 
-function openApp(appName){
+function createWindow(id,title,content){
 
 
 
     let old =
-    document.getElementById(appName);
-
+    document.getElementById(id);
 
 
     if(old){
 
-        old.style.display="block";
+        old.style.zIndex=++windowLayer;
 
-        old.style.zIndex=++windowCount;
-
-        return;
+        return old;
 
     }
 
@@ -152,182 +152,89 @@ function openApp(appName){
     document.createElement("div");
 
 
+
     win.className="os-window";
 
 
-    win.id=appName;
-
+    win.id=id;
 
 
     win.style.left =
-    (150 + windowCount*30)+"px";
+    (150 + windowLayer * 5)+"px";
 
 
     win.style.top =
-    (80 + windowCount*30)+"px";
+    (80 + windowLayer * 5)+"px";
+
 
 
     win.style.zIndex =
-    ++windowCount;
+    ++windowLayer;
 
 
 
 
 
-    let title="";
+    win.innerHTML = `
 
-    let content="";
+    <div class="window-header">
 
 
+        <span>
+        ${title}
+        </span>
 
 
-  if(appName==="explorer"){
 
-    explorerApp();
+        <div>
 
-    return;
 
-}
+        <button onclick="minimizeWindow('${id}')">
+        ─
+        </button>
 
 
-        title="📁 Explorer";
+        <button onclick="maximizeWindow('${id}')">
+        □
+        </button>
 
 
-        content=`
+        <button onclick="closeWindow('${id}')">
+        ✕
+        </button>
 
-        <h2>This PC</h2>
 
-        <p>💾 Local Disk (C:)</p>
-
-        <p>📂 Users</p>
-
-        <p>📂 Documents</p>
-
-        <p>📂 Downloads</p>
-
-        `;
-
-
-    }
-
-
-
-
-
-
-    if(appName==="terminal"){
-
-    terminalApp();
-
-    return;
-
-}
-
-
-        title="💻 Terminal";
-
-
-        content=`
-
-        <pre id="terminal">
-
-LaytonOS Terminal
-
-Type help
-
-C:\\Users\\Layton>
-
-        </pre>
-
-
-        <input 
-        id="terminalInput"
-        placeholder="command..."
-        >
-
-
-        `;
-
-
-    }
-
-
-
-
-
-
-
-    if(appName==="settings"){
-
-
-        title="⚙️ Settings";
-
-
-        content=`
-
-        <h2>System</h2>
-
-        <p>LaytonOS v1</p>
-
-        <p>Virtual Machine Mode</p>
-
-        <p>Browser OS</p>
-
-        `;
-
-
-    }
-
-
-
-
-
-
-
-
-    win.innerHTML=`
-
-    <div class="window-title">
-
-
-    <span>
-
-    ${title}
-
-    </span>
-
-
-    <button onclick="closeApp('${appName}')">
-
-    ✕
-
-    </button>
+        </div>
 
 
     </div>
+
 
 
     <div class="window-body">
 
-    ${content}
+        ${content}
 
     </div>
+
 
     `;
 
 
 
-
-    document.getElementById("window-area")
+    document
+    .getElementById("windows")
     .appendChild(win);
-
-
 
 
 
     makeDraggable(win);
 
 
+
+    return win;
+
+
 }
 
 
@@ -337,21 +244,134 @@ C:\\Users\\Layton>
 
 
 
-// -----------------------------
-// Close Apps
-// -----------------------------
+
+function openApp(app){
 
 
-function closeApp(id){
+    if(app==="explorer"){
+
+        explorerApp();
+
+    }
 
 
-    let app =
+
+    if(app==="terminal"){
+
+        terminalApp();
+
+    }
+
+
+
+    if(app==="notepad"){
+
+        notepadApp();
+
+    }
+
+
+
+    if(app==="settings"){
+
+        settingsApp();
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+function closeWindow(id){
+
+
+    let win =
     document.getElementById(id);
 
 
-    if(app){
 
-        app.remove();
+    if(win){
+
+        win.remove();
+
+    }
+
+
+}
+
+
+
+
+
+
+
+function minimizeWindow(id){
+
+
+    let win =
+    document.getElementById(id);
+
+
+
+    if(win){
+
+        win.style.display="none";
+
+    }
+
+
+}
+
+
+
+
+
+
+
+function maximizeWindow(id){
+
+
+    let win =
+    document.getElementById(id);
+
+
+
+    if(!win.dataset.max){
+
+
+        win.style.width="90%";
+
+        win.style.height="80%";
+
+        win.style.left="5%";
+
+        win.style.top="5%";
+
+
+        win.dataset.max="true";
+
+
+    }
+
+    else{
+
+
+        win.style.width="650px";
+
+        win.style.height="420px";
+
+        win.style.left="150px";
+
+        win.style.top="80px";
+
+
+        win.dataset.max="";
 
     }
 
@@ -365,26 +385,24 @@ function closeApp(id){
 
 
 
-// -----------------------------
+// =====================
 // Drag Windows
-// -----------------------------
+// =====================
 
 
-function makeDraggable(window){
-
+function makeDraggable(win){
 
 
     let header =
-    window.querySelector(".window-title");
+    win.querySelector(".window-header");
 
 
 
-    let dragging=false;
+    let moving=false;
 
+    let x=0;
 
-    let offsetX=0;
-
-    let offsetY=0;
+    let y=0;
 
 
 
@@ -393,24 +411,22 @@ function makeDraggable(window){
     header.onmousedown=(e)=>{
 
 
-        dragging=true;
+        moving=true;
 
 
-        window.style.zIndex =
-        ++windowCount;
+        win.style.zIndex=++windowLayer;
 
 
 
-        offsetX =
-        e.clientX-window.offsetLeft;
+        x =
+        e.clientX-win.offsetLeft;
 
 
-        offsetY =
-        e.clientY-window.offsetTop;
+        y =
+        e.clientY-win.offsetTop;
 
 
     };
-
 
 
 
@@ -419,12 +435,10 @@ function makeDraggable(window){
     document.onmouseup=()=>{
 
 
-        dragging=false;
+        moving=false;
 
 
     };
-
-
 
 
 
@@ -433,23 +447,20 @@ function makeDraggable(window){
     document.onmousemove=(e)=>{
 
 
-        if(!dragging)
+        if(!moving)
         return;
 
 
 
-        window.style.left =
-        (e.clientX-offsetX)+"px";
+        win.style.left =
+        (e.clientX-x)+"px";
 
 
-
-        window.style.top =
-        (e.clientY-offsetY)+"px";
-
+        win.style.top =
+        (e.clientY-y)+"px";
 
 
     };
-
 
 
 }
