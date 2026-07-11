@@ -1,9 +1,11 @@
-// =================================
-// LaytonOS Virtual Storage
-// =================================
+// =====================================
+// LaytonOS Virtual Storage System
+// =====================================
 
 
-const defaultDrive = {
+// Default virtual hard drive
+
+const defaultStorage = {
 
     "C:": {
 
@@ -21,10 +23,11 @@ const defaultDrive = {
 
         },
 
+
         "System": {
 
-            "Version.txt":
-            "LaytonOS v1"
+            "version.txt":
+            "LaytonOS Version 1.0"
 
         }
 
@@ -36,27 +39,40 @@ const defaultDrive = {
 
 
 
-function loadDrive(){
 
 
-    let drive =
-    localStorage.getItem("laytonDrive");
+
+// Load storage
 
 
-    if(drive){
+function loadStorage(){
 
-        return JSON.parse(drive);
+
+    let saved =
+    localStorage.getItem("LaytonOSStorage");
+
+
+
+    if(saved){
+
+
+        return JSON.parse(saved);
+
 
     }
 
 
+
     localStorage.setItem(
-        "laytonDrive",
-        JSON.stringify(defaultDrive)
+
+        "LaytonOSStorage",
+
+        JSON.stringify(defaultStorage)
+
     );
 
 
-    return defaultDrive;
+    return defaultStorage;
 
 
 }
@@ -65,14 +81,19 @@ function loadDrive(){
 
 
 
-function saveDrive(drive){
+
+
+// Save storage
+
+
+function saveStorage(){
 
 
     localStorage.setItem(
 
-        "laytonDrive",
+        "LaytonOSStorage",
 
-        JSON.stringify(drive)
+        JSON.stringify(fileSystem)
 
     );
 
@@ -83,4 +104,8 @@ function saveDrive(drive){
 
 
 
-let fileSystem = loadDrive();
+
+// Main filesystem object
+
+
+let fileSystem = loadStorage();
