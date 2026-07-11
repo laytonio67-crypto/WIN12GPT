@@ -1,15 +1,19 @@
-// =========================
-// LaytonOS System Engine
-// =========================
+// =====================================
+// LaytonOS Core System
+// =====================================
 
 
-// Boot sequence
+
+// -----------------------------
+// Boot System
+// -----------------------------
+
 
 setTimeout(() => {
 
-    document.getElementById("bootScreen").style.display = "none";
+    document.getElementById("boot").style.display = "none";
 
-    document.getElementById("loginScreen").style.display = "flex";
+    document.getElementById("login").style.display = "flex";
 
 
 }, 3000);
@@ -19,15 +23,16 @@ setTimeout(() => {
 
 
 
-// =========================
+
+// -----------------------------
 // Login
-// =========================
+// -----------------------------
 
 
-function login(){
+function startDesktop(){
 
 
-    document.getElementById("loginScreen").style.display="none";
+    document.getElementById("login").style.display="none";
 
 
     document.getElementById("desktop").style.display="block";
@@ -41,17 +46,51 @@ function login(){
 
 
 
+// -----------------------------
+// Clock
+// -----------------------------
 
-// =========================
+
+function updateClock(){
+
+
+    let date = new Date();
+
+
+    document.getElementById("clock").textContent =
+
+    date.toLocaleTimeString([], {
+
+        hour:"2-digit",
+
+        minute:"2-digit"
+
+    });
+
+
+}
+
+
+setInterval(updateClock,1000);
+
+updateClock();
+
+
+
+
+
+
+
+// -----------------------------
 // Start Menu
-// =========================
+// -----------------------------
 
 
 function toggleStart(){
 
 
     let menu =
-    document.getElementById("startMenu");
+    document.getElementById("start-menu");
 
 
     if(menu.style.display === "block"){
@@ -60,7 +99,7 @@ function toggleStart(){
 
     }
 
-    else{
+    else {
 
         menu.style.display="block";
 
@@ -76,75 +115,233 @@ function toggleStart(){
 
 
 
-// =========================
-// Window System
-// =========================
+
+// -----------------------------
+// Window Manager
+// -----------------------------
 
 
-function openWindow(id){
+let windowCount = 0;
+
+
+
+function openApp(appName){
+
+
+
+    let old =
+    document.getElementById(appName);
+
+
+
+    if(old){
+
+        old.style.display="block";
+
+        old.style.zIndex=++windowCount;
+
+        return;
+
+    }
+
+
+
 
 
     let win =
+    document.createElement("div");
+
+
+    win.className="os-window";
+
+
+    win.id=appName;
+
+
+
+    win.style.left =
+    (150 + windowCount*30)+"px";
+
+
+    win.style.top =
+    (80 + windowCount*30)+"px";
+
+
+    win.style.zIndex =
+    ++windowCount;
+
+
+
+
+
+    let title="";
+
+    let content="";
+
+
+
+
+    if(appName==="explorer"){
+
+
+        title="📁 Explorer";
+
+
+        content=`
+
+        <h2>This PC</h2>
+
+        <p>💾 Local Disk (C:)</p>
+
+        <p>📂 Users</p>
+
+        <p>📂 Documents</p>
+
+        <p>📂 Downloads</p>
+
+        `;
+
+
+    }
+
+
+
+
+
+
+    if(appName==="terminal"){
+
+
+        title="💻 Terminal";
+
+
+        content=`
+
+        <pre id="terminal">
+
+LaytonOS Terminal
+
+Type help
+
+C:\\Users\\Layton>
+
+        </pre>
+
+
+        <input 
+        id="terminalInput"
+        placeholder="command..."
+        >
+
+
+        `;
+
+
+    }
+
+
+
+
+
+
+
+    if(appName==="settings"){
+
+
+        title="⚙️ Settings";
+
+
+        content=`
+
+        <h2>System</h2>
+
+        <p>LaytonOS v1</p>
+
+        <p>Virtual Machine Mode</p>
+
+        <p>Browser OS</p>
+
+        `;
+
+
+    }
+
+
+
+
+
+
+
+
+    win.innerHTML=`
+
+    <div class="window-title">
+
+
+    <span>
+
+    ${title}
+
+    </span>
+
+
+    <button onclick="closeApp('${appName}')">
+
+    ✕
+
+    </button>
+
+
+    </div>
+
+
+    <div class="window-body">
+
+    ${content}
+
+    </div>
+
+    `;
+
+
+
+
+    document.getElementById("window-area")
+    .appendChild(win);
+
+
+
+
+
+    makeDraggable(win);
+
+
+}
+
+
+
+
+
+
+
+
+// -----------------------------
+// Close Apps
+// -----------------------------
+
+
+function closeApp(id){
+
+
+    let app =
     document.getElementById(id);
 
 
-    win.style.display="block";
+    if(app){
 
+        app.remove();
 
-    win.style.left="200px";
-
-    win.style.top="100px";
-
-
-    document.getElementById("startMenu").style.display="none";
-
-
-}
-
-
-
-
-
-function closeWindow(id){
-
-
-    document.getElementById(id)
-    .style.display="none";
-
-
-}
-
-
-
-
-
-function minimizeWindow(id){
-
-
-    document.getElementById(id)
-    .style.display="none";
-
-
-}
-
-
-
-
-
-function maximizeWindow(id){
-
-
-    let win =
-    document.getElementById(id);
-
-
-    win.style.left="5%";
-
-    win.style.top="5%";
-
-    win.style.width="90%";
-
-    win.style.height="80%";
+    }
 
 
 }
@@ -156,271 +353,18 @@ function maximizeWindow(id){
 
 
 
+// -----------------------------
+// Drag Windows
+// -----------------------------
 
-// =========================
-// Clock
-// =========================
 
+function makeDraggable(window){
 
-function updateClock(){
-
-
-    let time =
-    new Date();
-
-
-    document.getElementById("clock")
-    .innerHTML =
-
-    time.toLocaleTimeString([],{
-
-        hour:"2-digit",
-
-        minute:"2-digit"
-
-    });
-
-
-}
-
-
-
-setInterval(updateClock,1000);
-
-updateClock();
-
-
-
-
-
-
-
-
-
-// =========================
-// Terminal
-// =========================
-
-
-function terminalCommand(event){
-
-
-    if(event.key !== "Enter")
-    return;
-
-
-
-    let input =
-    document.getElementById("terminalInput");
-
-
-    let command =
-    input.value.toLowerCase();
-
-
-
-    let terminal =
-    document.getElementById("terminalText");
-
-
-
-    terminal.innerHTML +=
-    "\n\nC:\\Users\\Layton> "
-    + command;
-
-
-
-
-
-    if(command === "help"){
-
-
-        terminal.innerHTML +=
-        `
-
-Commands:
-
-help
-
-dir
-
-systeminfo
-
-clear
-
-echo
-
-restart
-
-shutdown
-
-        `;
-
-
-    }
-
-
-
-
-
-    else if(command === "dir"){
-
-
-        terminal.innerHTML +=
-        `
-
-Desktop
-
-Documents
-
-Downloads
-
-Pictures
-
-        `;
-
-
-    }
-
-
-
-
-
-    else if(command === "systeminfo"){
-
-
-        terminal.innerHTML +=
-        `
-
-LaytonOS VM
-
-CPU: Virtual Processor
-
-RAM: 32GB
-
-Storage: 256GB SSD
-
-        `;
-
-
-    }
-
-
-
-
-
-    else if(command === "clear"){
-
-
-        terminal.innerHTML =
-        "LaytonOS Terminal\n\nC:\\Users\\Layton>";
-
-    }
-
-
-
-
-
-    else if(command.startsWith("echo")){
-
-
-        terminal.innerHTML +=
-
-        "\n" +
-
-        command.replace(
-            "echo ",
-            ""
-        );
-
-
-    }
-
-
-
-
-
-    else if(command === "restart"){
-
-
-        location.reload();
-
-
-    }
-
-
-
-
-
-    else if(command === "shutdown"){
-
-
-        document.body.innerHTML =
-
-        `
-
-        <div style="
-        height:100vh;
-        background:black;
-        color:white;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        font-size:40px;
-        ">
-
-        LaytonOS is shutting down...
-
-        </div>
-
-        `;
-
-
-    }
-
-
-
-
-
-    else{
-
-
-        terminal.innerHTML +=
-        "\nCommand not found";
-
-
-    }
-
-
-
-    input.value="";
-
-
-    terminal.scrollTop =
-    terminal.scrollHeight;
-
-
-}
-
-
-
-
-
-
-
-
-
-// =========================
-// Window Dragging
-// =========================
-
-
-document.querySelectorAll(".window")
-.forEach(win=>{
 
 
     let header =
-    win.querySelector(".windowHeader");
+    window.querySelector(".window-title");
+
 
 
     let dragging=false;
@@ -432,18 +376,25 @@ document.querySelectorAll(".window")
 
 
 
-    header.onmousedown=function(e){
+
+
+    header.onmousedown=(e)=>{
 
 
         dragging=true;
 
 
+        window.style.zIndex =
+        ++windowCount;
+
+
+
         offsetX =
-        e.clientX-win.offsetLeft;
+        e.clientX-window.offsetLeft;
 
 
         offsetY =
-        e.clientY-win.offsetTop;
+        e.clientY-window.offsetTop;
 
 
     };
@@ -452,7 +403,8 @@ document.querySelectorAll(".window")
 
 
 
-    document.onmouseup=function(){
+
+    document.onmouseup=()=>{
 
 
         dragging=false;
@@ -464,7 +416,9 @@ document.querySelectorAll(".window")
 
 
 
-    document.onmousemove=function(e){
+
+
+    document.onmousemove=(e)=>{
 
 
         if(!dragging)
@@ -472,48 +426,18 @@ document.querySelectorAll(".window")
 
 
 
-        win.style.left =
+        window.style.left =
         (e.clientX-offsetX)+"px";
 
 
 
-        win.style.top =
+        window.style.top =
         (e.clientY-offsetY)+"px";
+
 
 
     };
 
 
 
-});
-
-
-
-
-
-
-
-
-// =========================
-// Keyboard shortcuts
-// =========================
-
-
-document.addEventListener(
-"keydown",
-
-function(e){
-
-
-    if(e.key === "Escape"){
-
-
-        document.getElementById("startMenu")
-        .style.display="none";
-
-
-    }
-
-
-
-});
+}
