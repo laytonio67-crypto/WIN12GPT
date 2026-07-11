@@ -3,76 +3,68 @@
 // =====================================
 
 
+let explorerPath = ["C:"];
+
+
+
+
+
 function explorerApp(){
 
 
-    let win = document.getElementById("explorer");
+    let old =
+    document.getElementById("explorer");
 
-    if(win){
-        win.remove();
+
+    if(old){
+
+        old.style.display="block";
+
+        old.style.zIndex=999;
+
+        return;
+
     }
 
 
 
-    let explorer =
-    document.createElement("div");
 
 
-    explorer.className="os-window";
+    let content = `
 
-    explorer.id="explorer";
-
-
-
-    explorer.style.left="180px";
-
-    explorer.style.top="100px";
-
-
-
-    explorer.innerHTML = `
-
-    <div class="window-title">
-
-        <span>
-        📁 File Explorer
-        </span>
-
-        <button onclick="closeApp('explorer')">
-        ✕
-        </button>
+    <div id="explorerPath">
 
     </div>
 
 
-    <div class="window-body">
+    <hr>
 
 
-        <h2>
-        LaytonOS Drive
-        </h2>
-
-
-        <div id="fileList">
-
-        </div>
-
+    <div id="explorerFiles">
 
     </div>
+
 
     `;
 
 
 
-    document
-    .getElementById("window-area")
-    .appendChild(explorer);
+
+
+    let win =
+    createWindow(
+
+        "explorer",
+
+        "📁 File Explorer",
+
+        content
+
+    );
 
 
 
-    displayFiles("C:");
-
-    makeDraggable(explorer);
+    explorerRender();
 
 
 }
@@ -83,65 +75,105 @@ function explorerApp(){
 
 
 
-function displayFiles(path){
 
-
-    let list =
-    document.getElementById("fileList");
-
-
-    list.innerHTML="";
+function explorerRender(){
 
 
 
-    let current =
-    fileSystem[path];
+    let pathBox =
+    document.getElementById("explorerPath");
 
 
 
-    if(!current){
+    let filesBox =
+    document.getElementById("explorerFiles");
 
-        list.innerHTML=
-        "Folder not found";
 
+
+    if(!filesBox)
         return;
 
-    }
+
+
+
+
+    let folder =
+    getFolder(explorerPath);
+
+
+
+    pathBox.innerHTML =
+
+    "C:\\" +
+
+    explorerPath
+    .slice(1)
+    .join("\\");
 
 
 
 
 
-    Object.keys(current)
+    filesBox.innerHTML="";
+
+
+
+
+    Object.keys(folder)
     .forEach(item=>{
 
 
-        let element =
-        document.createElement("p");
+
+        let button =
+        document.createElement("button");
 
 
 
-        if(typeof current[item]==="object"){
+        let isFolder =
+        typeof folder[item] === "object";
 
 
-            element.innerHTML =
-            "📁 " + item;
+
+        button.innerHTML =
+
+        (isFolder ? "📁 " : "📄 ")
+        + item;
+
+
+
+        button.style.display="block";
+
+        button.style.width="100%";
+
+        button.style.textAlign="left";
+
+        button.style.margin="5px";
+
+        button.style.padding="10px";
+
+
+
+
+        if(isFolder){
+
+
+            button.onclick=()=>{
+
+
+                explorerPath.push(item);
+
+
+                explorerRender();
+
+
+            };
 
 
         }
 
-        else {
 
 
-            element.innerHTML =
-            "📄 " + item;
-
-
-        }
-
-
-
-        list.appendChild(element);
+        filesBox.appendChild(button);
 
 
 
@@ -157,6 +189,28 @@ function displayFiles(path){
 
 
 
-// Make Explorer open from desktop/taskbar
 
-window.openExplorer = explorerApp;
+function getFolder(path){
+
+
+
+    let current =
+    fileSystem;
+
+
+
+    for(let part of path){
+
+
+        current =
+        current[part];
+
+
+    }
+
+
+
+    return current;
+
+
+}
