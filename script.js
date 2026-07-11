@@ -181,7 +181,13 @@ function openApp(appName){
 
 
 
-    if(appName==="explorer"){
+  if(appName==="explorer"){
+
+    explorerApp();
+
+    return;
+
+}
 
 
         title="📁 Explorer";
