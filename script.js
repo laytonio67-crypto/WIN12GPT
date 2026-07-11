@@ -217,6 +217,12 @@ function openApp(appName){
 
     if(appName==="terminal"){
 
+    terminalApp();
+
+    return;
+
+}
+
 
         title="💻 Terminal";
 
