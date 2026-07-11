@@ -11,96 +11,78 @@ function notepadApp(){
 
 
     if(old){
-        old.remove();
+
+        old.style.display="block";
+
+        old.style.zIndex=999;
+
+        return;
+
     }
 
 
 
 
-    let notepad =
-    document.createElement("div");
+
+    let content = `
 
 
-    notepad.className="os-window";
-
-    notepad.id="notepad";
-
-
-
-    notepad.style.left="320px";
-
-    notepad.style.top="140px";
+    <input 
+    id="noteName"
+    value="NewFile.txt"
+    placeholder="File name"
+    >
 
 
 
-    notepad.innerHTML = `
-
-    <div class="window-title">
-
-        <span>
-        📝 Notepad
-        </span>
-
-
-        <div>
-
-        <button onclick="saveNote()">
-        💾
-        </button>
-
-
-        <button onclick="closeApp('notepad')">
-        ✕
-        </button>
-
-
-        </div>
-
-
-    </div>
-
-
-    <div class="window-body">
-
-
-        <input 
-        id="fileName"
-        placeholder="File name"
-        value="NewText.txt"
-        >
-
-
-        <br><br>
-
-
-        <textarea
-        id="noteText"
-        style="
-        width:100%;
-        height:230px;
-        resize:none;
-        "
-        ></textarea>
+    <br><br>
 
 
 
-    </div>
+    <textarea
+    id="noteText"
+    style="
+    width:100%;
+    height:250px;
+    "
+    placeholder="Type here..."
+    ></textarea>
+
+
+
+    <br><br>
+
+
+
+    <button onclick="saveNote()">
+    💾 Save
+    </button>
+
+
+
+    <button onclick="loadNote()">
+    📂 Load
+    </button>
+
 
     `;
 
 
 
-    document
-    .getElementById("window-area")
-    .appendChild(notepad);
 
+    createWindow(
 
+        "notepad",
 
-    makeDraggable(notepad);
+        "📝 Notepad",
 
+        content
+
+    );
 
 
 }
+
 
 
 
@@ -113,7 +95,7 @@ function saveNote(){
 
 
     let name =
-    document.getElementById("fileName")
+    document.getElementById("noteName")
     .value;
 
 
@@ -130,20 +112,19 @@ function saveNote(){
     .Users
     .Layton
     .Documents[name]
-    =
-    text;
+    = text;
 
 
 
 
-
-    saveDrive(fileSystem);
-
+    saveStorage();
 
 
 
     alert(
+
         "Saved " + name
+
     );
 
 
@@ -155,4 +136,47 @@ function saveNote(){
 
 
 
-window.openNotepad = notepadApp;
+
+function loadNote(){
+
+
+
+    let name =
+    document.getElementById("noteName")
+    .value;
+
+
+
+
+    let file =
+    fileSystem["C:"]
+    .Users
+    .Layton
+    .Documents[name];
+
+
+
+
+
+    if(file){
+
+
+        document.getElementById("noteText")
+        .value=file;
+
+
+    }
+
+    else{
+
+
+        alert(
+            "File not found"
+        );
+
+
+    }
+
+
+
+}
