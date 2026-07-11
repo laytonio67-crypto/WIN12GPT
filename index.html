@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LaytonOS</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================
+     BOOT SCREEN
+===================== -->
+
+<div id="bootScreen">
+
+    <div class="bootLogo">
+        ◉
+    </div>
+
+    <h1>LaytonOS</h1>
+
+    <p>Starting virtual machine...</p>
+
+    <div class="loadingBar">
+        <div></div>
+    </div>
+
+</div>
+
+
+
+
+<!-- =====================
+     LOGIN SCREEN
+===================== -->
+
+
+<div id="loginScreen">
+
+
+    <div class="loginBox">
+
+        <div class="avatar">
+            👤
+        </div>
+
+
+        <h1>Layton</h1>
+
+
+        <button onclick="login()">
+            Sign In
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+
+
+
+<!-- =====================
+     DESKTOP
+===================== -->
+
+
+<div id="desktop">
+
+
+    <div class="desktopIcon" ondblclick="openWindow('explorer')">
+
+        📁
+        <span>
+            File Explorer
+        </span>
+
+    </div>
+
+
+
+    <div class="desktopIcon" ondblclick="openWindow('terminal')">
+
+        💻
+        <span>
+            Terminal
+        </span>
+
+    </div>
+
+
+
+    <div class="desktopIcon" ondblclick="openWindow('settings')">
+
+        ⚙️
+        <span>
+            Settings
+        </span>
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+<!-- =====================
+     START MENU
+===================== -->
+
+
+<div id="startMenu">
+
+
+    <h2>
+        LaytonOS
+    </h2>
+
+
+    <input placeholder="Search">
+
+
+    <div class="startApps">
+
+
+        <button onclick="openWindow('explorer')">
+            📁
+            <br>
+            Files
+        </button>
+
+
+        <button onclick="openWindow('terminal')">
+            💻
+            <br>
+            Terminal
+        </button>
+
+
+
+        <button onclick="openWindow('settings')">
+            ⚙️
+            <br>
+            Settings
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- =====================
+     FILE EXPLORER
+===================== -->
+
+
+<div class="window" id="explorer">
+
+
+<div class="windowHeader">
+
+<span>
+📁 File Explorer
+</span>
+
+
+<div>
+
+<button onclick="minimizeWindow('explorer')">
+─
+</button>
+
+<button onclick="maximizeWindow('explorer')">
+□
+</button>
+
+<button onclick="closeWindow('explorer')">
+✕
+</button>
+
+</div>
+
+
+</div>
+
+
+
+<div class="windowContent">
+
+
+<h2>
+This PC
+</h2>
+
+
+<p>💾 Local Disk (C:)</p>
+
+<p>📂 Users</p>
+
+<p>📂 Documents</p>
+
+<p>📂 Downloads</p>
+
+<p>📂 Pictures</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- =====================
+     TERMINAL
+===================== -->
+
+
+<div class="window" id="terminal">
+
+
+<div class="windowHeader">
+
+<span>
+💻 Terminal
+</span>
+
+
+<button onclick="closeWindow('terminal')">
+✕
+</button>
+
+
+</div>
+
+
+<div class="windowContent">
+
+
+<pre id="terminalText">
+
+LaytonOS Terminal
+
+Type help for commands
+
+
+C:\Users\Layton>
+
+</pre>
+
+
+<input 
+id="terminalInput"
+placeholder="command..."
+onkeydown="terminalCommand(event)"
+>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- =====================
+     SETTINGS
+===================== -->
+
+
+<div class="window" id="settings">
+
+
+<div class="windowHeader">
+
+
+<span>
+⚙️ Settings
+</span>
+
+
+<button onclick="closeWindow('settings')">
+✕
+</button>
+
+
+</div>
+
+
+<div class="windowContent">
+
+
+<h2>
+System
+</h2>
+
+
+<p>
+OS: LaytonOS
+</p>
+
+
+<p>
+Version: 0.2
+</p>
+
+
+<p>
+CPU: Virtual Processor
+</p>
+
+
+<p>
+RAM: 32GB Virtual Memory
+</p>
+
+
+<p>
+Storage: 256GB Virtual SSD
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- =====================
+     TASKBAR
+===================== -->
+
+
+<div id="taskbar">
+
+
+<button onclick="toggleStart()">
+⊞
+</button>
+
+
+
+<button onclick="openWindow('explorer')">
+📁
+</button>
+
+
+
+<button onclick="openWindow('terminal')">
+💻
+</button>
+
+
+
+<button onclick="openWindow('settings')">
+⚙️
+</button>
+
+
+
+<div id="clock">
+
+</div>
+
+
+</div>
+
+
+
+
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
